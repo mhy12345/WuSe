@@ -68,6 +68,11 @@ body{
     padding:20px;
     overflow:auto;
 }
+.buffer{
+    width:350px;
+    margin:auto;
+    padding:auto;
+}
 .key{
     float:left;
     height:35px;
@@ -89,25 +94,27 @@ body{
     display:none;
 }
 .color-name{
-    width:40%;
-    float:left;
-    padding:10px;
-        padding-left:20px;
-
-    font-size:50px;
+    float:right;
+    padding:15px;
+    padding-right:10px;
+    font-size:40px;
     font-family:LiSu;
 }
-.color-pinyin{
-    height:40px;
-    width:40%;
-    float:left;
-    padding-top:50px;
+.clear{
+    clear:both;
 }
 .color-info1{
-    width:50%;
-    padding-left:30px;
+    float:right;
+    padding-top:10px;
+    padding-right:10px;
+    position:relative;
+    font-size:14px;
+    font-weight: bold;
 }
 .color-info2{
-    width:50%;
-    padding-left:30px;
+    float:right;
+    padding-right:10px;
+    position:relative;
+    font-size:14px;
+    font-weight: bold;
 }

@@ -10,6 +10,7 @@
     <script src="./javascripts/d3.v4.min.js"></script>
     <script src='./javascripts/jquery.color.js'></script>
     <script src='./javascripts/color-zg.js'></script>
+    <script src='./modules/mixer.js'></script>
 </head>
 
 <body>
@@ -20,65 +21,30 @@
                 <div class='color-name' id='color-name'>
                     靛蓝
                 </div>
-                <div class='color-pinyin' id='color-name'>
-                    Tianlanse
-                </div>
+                <div class='clear'></div>
                 <div class='color-info1' id='color-info1'>
-                    R:27 G:84 B:242
+                    R27 G84 B242
                 </div>
+                <div class='clear'></div>
                 <div class='color-info2' id='color-info2'>
-                    C=83 M=68 Y=0 K=0
+                    C83 M68 Y0 K0
                 </div>
             </div>
-            <div class='key-box' id='key-box'>
+            <div class='key-box' >
+                <div class='buffer' id='key-box'>
+                </div>
             </div>
         </div>
         <div class='right-column'>
-            <div class='graph'>
-                <html>
-
-                <head>
-                    <link rel='stylesheet' type='text/css' href='./stylesheets/style-mixer.css' />
-                </head>
-
-                <body>
-                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="400px" height="400px" id='mixer-circle' class='mixer-circle'>
-                        <g transform="translate(200,200)">
-                            <circle r='100px' stroke="black" stroke-width="2" fill="none" id='mixer-center'></circle>
-                            <circle r='130px' stroke="black" stroke-width="2" fill="none"></circle>
-                            <path></path>
-                        </g>
-                    </svg>
-                    <style>
-                        .graph-footer {
-                            height: 150px;
-                            width: 85%;
-                            margin: auto;
-                            margin-top: 30px;
-                        }
-                    </style>
-                    <div class='graph-footer'>
-                        颜色混合器，将颜色拖入三个混合器中，即可混合三种颜色~
-                    </div>
-                </body>
-                <script src='./javascripts/mixer.js'></script>
-
-                </html>
+            <div class='graph' id='graph-container'>
+                <!-- TODO: Load Modules Here! -->
             </div>
         </div>
     </div>
 </body>
 
 <script>
-    var container = d3.select("#key-box");
-    container.selectAll('div').data(window.color.zg)
-        .enter().append('div')
-        .classed('key', true)
-        .attr('id', function (e, i) { return 'color-botton-' + i; })
-        .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
-        .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
     $(window).mousedown(function (e) {
-        //console.log(document.elementFromPoint(e.clientX, e.clientY));
         if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
             mouseMoving = true;
             var but = document.elementFromPoint(e.clientX, e.clientY);
@@ -91,14 +57,16 @@
                 .attr('color-info', but.getAttribute('color-info'))
                 .css({ "background-color": but.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
             if ($("#screen").backgroundColor != but.getAttribute('color-info')) {
-                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 3000, "swing", function () {
+                $("#panel").stop();
+                $("#screen").stop();
+                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 2000, "swing", function () {
                     $("#panel").stop();
                 });
-                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 4000);
+                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 3000);
             }
             $("#color-name").text(window.color.zg[id]['name']);
-            $("#color-info1").text("R=" + window.color.zg[id]['RGB'][0] + " " + "G=" + window.color.zg[id]['RGB'][1] + " " + "B=" + window.color.zg[id]['RGB'][2]);
-            $("#color-info2").text("C=" + window.color.zg[id]['CMYK'][0] + " " + "M=" + window.color.zg[id]['CMYK'][1] + " " + "Y=" + window.color.zg[id]['CMYK'][2] + " " + "K=" + window.color.zg[id]['CMYK'][3]);
+            $("#color-info1").text("R" + window.color.zg[id]['RGB'][0] + " " + "G" + window.color.zg[id]['RGB'][1] + " " + "B" + window.color.zg[id]['RGB'][2]);
+            $("#color-info2").text("C" + window.color.zg[id]['CMYK'][0] + " " + "M" + window.color.zg[id]['CMYK'][1] + " " + "Y" + window.color.zg[id]['CMYK'][2] + " " + "K" + window.color.zg[id]['CMYK'][3]);
             e.preventDefault();
 
         }
@@ -128,6 +96,30 @@
                 }
             }
         }
+    });
+    function installModule(name) {
+        var html = window.graphingModules[name].html;
+        var scripts = window.graphingModules[name].scripts;
+        document.getElementById('graph-container').innerHTML = html;
+        for (var script of scripts) {
+            var s = document.createElement('script');
+            s.setAttribute('src', script)
+            document.body.appendChild(s);
+            s.remove();
+        }
+    };
+    function uninstallModule() {
+        document.getElementById('graph-container').innerHTML = "";
+    };
+    $(window).ready(function () {
+        var container = d3.select("#key-box");
+        container.selectAll('div').data(window.color.zg)
+            .enter().append('div')
+            .classed('key', true)
+            .attr('id', function (e, i) { return 'color-botton-' + i; })
+            .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
+            .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
+        installModule('mixer');
     });
 
 </script>

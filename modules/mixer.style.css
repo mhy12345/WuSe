@@ -1,0 +1,11 @@
+.mixer-circle{
+    height:400px;
+    width:400px;
+    margin:auto;
+}
+.mixer-header{
+    font-weight: bold;
+    padding-top:20px;
+    padding-left:30%;
+    font-size:30px;
+}
