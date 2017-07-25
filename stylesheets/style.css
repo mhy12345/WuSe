@@ -91,9 +91,11 @@ body{
 .color-name{
     width:40%;
     float:left;
-    padding:20px;
+    padding:10px;
+        padding-left:20px;
+
     font-size:50px;
-    font-family:SimHei;
+    font-family:LiSu;
 }
 .color-pinyin{
     height:40px;
@@ -103,9 +105,9 @@ body{
 }
 .color-info1{
     width:50%;
-    margin-left:30px;
+    padding-left:30px;
 }
 .color-info2{
     width:50%;
-    margin-left:30px;
+    padding-left:30px;
 }
