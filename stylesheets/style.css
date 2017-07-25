@@ -49,7 +49,7 @@ body{
 }
 .screen{
     height:150px;
-    width:85%;
+    width:390px;
     margin:auto;
     margin-top:30px;
     margin-bottom:30px;
@@ -60,7 +60,7 @@ body{
 
 .key-box{
     height:340px;
-    width:359px;
+    width:350px;
     margin:auto;
     background-color: rgb(255,250,240);
     border-radius:20px;

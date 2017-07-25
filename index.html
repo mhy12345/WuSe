@@ -3,12 +3,10 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
     <title>悟色</title>
     <link rel='stylesheet' type='text/css' href='./stylesheets/style.css' />
     <!--<script src='http://code.jquery.com/jquery-latest.js'></script>-->
     <script src="./javascripts/jquery.js"></script>
-
     <script src="./javascripts/d3.v4.min.js"></script>
     <script src='./javascripts/jquery.color.js'></script>
     <script src='./javascripts/color-zg.js'></script>
@@ -63,44 +61,7 @@
                         颜色混合器，将颜色拖入三个混合器中，即可混合三种颜色~
                     </div>
                 </body>
-                <script>
-                    function paintCenter() {
-                        var R = 0;
-                        var G = 0;
-                        var B = 0;
-                        var sum = 0;
-                        for (w of $(".mixer-area")) {
-                            lst = w.getAttribute('fill').slice(4, -1).split(',');
-                            R = Math.max(R, +lst[0]);
-                            G = Math.max(G, +lst[1]);
-                            B = Math.max(B, +lst[2]);
-                        }
-                        //R/=3;G/=3;B/=3;
-                        console.log(R + "," + G + "," + B);
-                        $("#mixer-center").attr('fill', "rgb(" + R + "," + G + "," + B + ")");
-                    }
-                    ArcList = [0, 2.0 / 3 * Math.PI, 4.0 / 3 * Math.PI];
-                    ColList = ["rgb(255,0,0)", "rgb(0,255,0)", "rgb(0,0,255)"];
-                    $(".mixer-circle path").remove();
-                    var mixer = $(".mixer-circle g")[0];
-                    for (var i = 0; i < ArcList.length; i++) {
-                        var alpha = ArcList[i], beta = ArcList[(i + 1) % ArcList.length];
-                        var flag = Math.abs(beta - alpha) > Math.PI ? 1 : 0;
-                        var flag2 = 1;
-                        if (alpha > beta) { var t = alpha; alpha = beta; beta = t; flag = 1 - flag; flag2 = 0; };
-                        var area = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-                        area.setAttribute('d', 'M ' + 100 * Math.cos(alpha) + " " + 100 * Math.sin(alpha) + " A" + 100 + " " + 100 + " " + 0 + " " + flag + " " + flag2 + " " + 100 * Math.cos(beta) + " " + 100 * Math.sin(beta) + " "
-                            + " L" + 130 * Math.cos(beta) + " " + 130 * Math.sin(beta) + " A" + 130 + " " + 130 + " " + 0 + " " + flag + " " + (1 - flag2) + " " + 130 * Math.cos(alpha) + " " + 130 * Math.sin(alpha) + " "
-                            + " Z");
-                        area.setAttribute('fill', ColList[i]);
-                        area.setAttribute('graphObject', null);
-                        area.setAttribute('class', "mixer-area");
-                        mixer.appendChild(area);
-                        area.onColorChange = function () { paintCenter() };
-                    }
-                    paintCenter();
-
-                </script>
+                <script src='./javascripts/mixer.js'></script>
 
                 </html>
             </div>
@@ -109,65 +70,65 @@
 </body>
 
 <script>
-                    var container = d3.select("#key-box");
-                    container.selectAll('div').data(window.color.zg)
-                        .enter().append('div')
-                        .classed('key', true)
-                        .attr('id', function (e, i) { return 'color-botton-' + i; })
-                        .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
-                        .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
-                    $(window).mousedown(function (e) {
-                        //console.log(document.elementFromPoint(e.clientX, e.clientY));
-                        if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
-                            mouseMoving = true;
-                            var but = document.elementFromPoint(e.clientX, e.clientY);
-                            var id = but.getAttribute('id').substr(13);
-                            //alert(id)
-                            var ele = document.getElementById('cursor-circle');
-                            document.body.style.cursor = "none";
-                            //alert(e.clientX+" "+e.clientY);
-                            $(ele).removeClass('hidden')
-                                .attr('color-info', but.getAttribute('color-info'))
-                                .css({ "background-color": but.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
-                            if ($("#screen").backgroundColor != but.getAttribute('color-info')) {
-                                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 3000, "swing", function () {
-                                    $("#panel").stop();
-                                });
-                                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 4000);
-                            }
-                            $("#color-name").text(window.color.zg[id]['name']);
-                            $("#color-info1").text("R=" + window.color.zg[id]['RGB'][0] + " " + "G=" + window.color.zg[id]['RGB'][1] + " " + "B=" + window.color.zg[id]['RGB'][2]);
-                            $("#color-info2").text("C=" + window.color.zg[id]['CMYK'][0] + " " + "M=" + window.color.zg[id]['CMYK'][1] + " " + "Y=" + window.color.zg[id]['CMYK'][2] + " " + "K=" + window.color.zg[id]['CMYK'][3]);
-                            e.preventDefault();
+    var container = d3.select("#key-box");
+    container.selectAll('div').data(window.color.zg)
+        .enter().append('div')
+        .classed('key', true)
+        .attr('id', function (e, i) { return 'color-botton-' + i; })
+        .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
+        .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
+    $(window).mousedown(function (e) {
+        //console.log(document.elementFromPoint(e.clientX, e.clientY));
+        if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
+            mouseMoving = true;
+            var but = document.elementFromPoint(e.clientX, e.clientY);
+            var id = but.getAttribute('id').substr(13);
+            //alert(id)
+            var ele = document.getElementById('cursor-circle');
+            document.body.style.cursor = "none";
+            //alert(e.clientX+" "+e.clientY);
+            $(ele).removeClass('hidden')
+                .attr('color-info', but.getAttribute('color-info'))
+                .css({ "background-color": but.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
+            if ($("#screen").backgroundColor != but.getAttribute('color-info')) {
+                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 3000, "swing", function () {
+                    $("#panel").stop();
+                });
+                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 4000);
+            }
+            $("#color-name").text(window.color.zg[id]['name']);
+            $("#color-info1").text("R=" + window.color.zg[id]['RGB'][0] + " " + "G=" + window.color.zg[id]['RGB'][1] + " " + "B=" + window.color.zg[id]['RGB'][2]);
+            $("#color-info2").text("C=" + window.color.zg[id]['CMYK'][0] + " " + "M=" + window.color.zg[id]['CMYK'][1] + " " + "Y=" + window.color.zg[id]['CMYK'][2] + " " + "K=" + window.color.zg[id]['CMYK'][3]);
+            e.preventDefault();
 
-                        }
-                    });
-                    $(window).mousemove(function (e) {
-                        if (typeof mouseMoving != "undefined") {
-                            var ele = document.getElementById('cursor-circle');
-                            $(ele).removeClass('hidden').css({ "background-color": ele.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
-                            e.preventDefault();
-                        }
-                    })
-                    $(window).mouseup(function (e) {
-                        if (typeof mouseMoving != "undefined") {
-                            mouseMoving = undefined;
-                            //alert("UP"+e.clientX+" "+e.clientY);
-                            var ele = document.getElementById('cursor-circle');
-                            $(ele).addClass('hidden');
-                            document.body.style.cursor = "default";
-                            e.preventDefault();
-                            var target = document.elementFromPoint(e.clientX, e.clientY);
-                            if (target.hasAttribute('graphObject')) {
-                                if (target.tagName == 'circle' || target.tagName == 'path') {
-                                    target.setAttribute('fill', ele.getAttribute('color-info'));
-                                }
-                                if (typeof target.onColorChange == 'function') {
-                                    target.onColorChange();
-                                }
-                            }
-                        }
-                    });
+        }
+    });
+    $(window).mousemove(function (e) {
+        if (typeof mouseMoving != "undefined") {
+            var ele = document.getElementById('cursor-circle');
+            $(ele).removeClass('hidden').css({ "background-color": ele.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
+            e.preventDefault();
+        }
+    })
+    $(window).mouseup(function (e) {
+        if (typeof mouseMoving != "undefined") {
+            mouseMoving = undefined;
+            //alert("UP"+e.clientX+" "+e.clientY);
+            var ele = document.getElementById('cursor-circle');
+            $(ele).addClass('hidden');
+            document.body.style.cursor = "default";
+            e.preventDefault();
+            var target = document.elementFromPoint(e.clientX, e.clientY);
+            if (target.hasAttribute('graphObject')) {
+                if (target.tagName == 'circle' || target.tagName == 'path') {
+                    target.setAttribute('fill', ele.getAttribute('color-info'));
+                }
+                if (typeof target.onColorChange == 'function') {
+                    target.onColorChange();
+                }
+            }
+        }
+    });
 
 </script>
 
