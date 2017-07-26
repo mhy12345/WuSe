@@ -11,6 +11,7 @@
     <script src='./javascripts/jquery.color.js'></script>
     <script src='./javascripts/color-zg.js'></script>
     <script src='./modules/mixer.js'></script>
+    <script type="text/javascript" src="./modules/firework.js"></script>
 </head>
 
 <body>
@@ -44,10 +45,10 @@
 </body>
 
 <script>
-    $(window).mousedown(function (e) {
+    $(window).mousedown(function (e) {//通过这个函数来获得颜色
         if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
             mouseMoving = true;
-            var but = document.elementFromPoint(e.clientX, e.clientY);
+            var but = document.elementFromPoint(e.clientX, e.clientY);//get DOM
             var id = but.getAttribute('id').substr(13);
             //alert(id)
             var ele = document.getElementById('cursor-circle');
@@ -82,7 +83,7 @@
         if (typeof mouseMoving != "undefined") {
             mouseMoving = undefined;
             //alert("UP"+e.clientX+" "+e.clientY);
-            var ele = document.getElementById('cursor-circle');
+            var ele = document.getElementById('cursor-circle');//
             $(ele).addClass('hidden');
             document.body.style.cursor = "default";
             e.preventDefault();
@@ -97,6 +98,18 @@
             }
         }
     });
+    var currentcolor=document.getElementById("panel").style.backgroundColor;
+    var colors=[];
+    function updating(){
+        var flag=false;
+        for(let i=0;i<colors.length;++i)
+            if(colors[i]===currentcolor)
+                flag=true;
+        if(flag===false)
+            colors.push(currentcolor);
+        else
+            flag=false;
+    };
     function installModule(name) {
         var html = window.graphingModules[name].html;
         var scripts = window.graphingModules[name].scripts;
@@ -119,7 +132,7 @@
             .attr('id', function (e, i) { return 'color-botton-' + i; })
             .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
             .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
-        installModule('mixer');
+        installModule('firework');
     });
 
 </script>
