@@ -48,4 +48,7 @@ for (var i = 0; i < ArcList.length; i++) {
     mixer.appendChild(area);
     area.onColorChange = function () { paintCenter() };
 }
+// console.info("1");
+document.getElementById('graph-container').style.background="#f7eed6";
+// console.info("2");
 paintCenter();
