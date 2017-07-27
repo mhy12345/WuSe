@@ -89,8 +89,8 @@
             document.body.style.cursor = "default";
             e.preventDefault();
             var target = document.elementFromPoint(e.clientX, e.clientY);
-            if (target.hasAttribute('graphObject')) {
-                if (target.tagName == 'circle' || target.tagName == 'path') {
+            if (target.hasAttribute('graphObject') || target.hasAttribute('graphobject')) {
+                if (target.tagName == 'circle' || target.tagName == 'path'|| target.tagName == 'rect') {
                     target.setAttribute('fill', ele.getAttribute('color-info'));
                 }
                 if (typeof target.onColorChange == 'function') {
