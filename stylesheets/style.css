@@ -2,7 +2,7 @@ html{
     height:100%;
 }
 body{
-    width:1000px;
+    width:950px;
     height:600px;
     margin-top:10px;
     margin:auto;
@@ -13,7 +13,6 @@ body{
     position:relative;
     width:950px;
     height:650px;
-    margin:auto;
     margin-top:40px;
     background-color:rgb(29,78,104);
     border:0px solid #000;
@@ -38,11 +37,13 @@ body{
     padding:10px;
     float:left;
 }
-#graph-container{
-    height:560px;
-    width:85%;
+.graph{
+    width:403px;
     margin-left:10px;
     margin-top:30px;
+}
+#graph-container{
+    height:560px;
     background-color: rgb(247,238,214);
     border-radius:20px;
     box-shadow:3px 3px 20px #000
@@ -119,9 +120,6 @@ body{
     font-weight: bold;
 }
 
-#tl{
-
-}
-#tr{
-
+.move{
+    height:100%;float:left;position:absolute;margin-top:50px;padding-top:150px
 }

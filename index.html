@@ -13,6 +13,7 @@
     <script src='./modules/mixer.js'></script>
     <script type="text/javascript" src="./modules/firework.js"></script>
     <script type="text/javascript" src="./modules/streamgraph.js"></script>
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
 </head>
 
 <body>
@@ -32,127 +33,136 @@
                     C83 M68 Y0 K0
                 </div>
             </div>
-            <div class='key-box' >
+            <div class='key-box'>
                 <div class='buffer' id='key-box'>
                 </div>
             </div>
         </div>
         <div class='right-column'>
-        <div id="turnleft">
-            <script type="text/javascript">
-            var a=document.getElementById("turnleft");
-            function mouseOver(){
-                a.style.display=block;
-            }
-            function mouseOut(){
-                a.style.display=none;
-            }
 
-            </script>
-        </div>
-        <div id="turnright"></div>
-            <div class='graph' id='graph-container'>
-                <!-- TODO: Load Modules Here! -->
+            <div class='graph'>
+                <div id="turnleft" class='move' style='float:left;'>
+                    <a onclick='turnleft()'>
+                        <span class='glyphicon glyphicon-chevron-left' style='font-size:30px'></span>
+                    </a>
+                </div>
+                <div id="turnright" class='move' style='float:right;'>
+                    <a onclick='turnright()'>
+                        <span class='glyphicon glyphicon-chevron-right' style='font-size:30px'></span>
+                    </a>
+                </div>
+                <div id='graph-container'>
+                    <!-- TODO: Load Modules Here! -->
+                </div>
             </div>
+            <script type="text/javascript">
+                var a = document.getElementById("turnleft");
+                function mouseOver() {
+                    a.style.display = block;
+                }
+                function mouseOut() {
+                    a.style.display = none;
+                }
+            </script>
         </div>
     </div>
 </body>
 
 <script>
-var themodule=["mixer","firework","streamgraph"];//通过这个函数来添加样式
-var order=0;
-    $(window).mousedown(function (e) {//通过这个函数来获得颜色
-        if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
-            mouseMoving = true;
-            var but = document.elementFromPoint(e.clientX, e.clientY);//get DOM
-            var id = but.getAttribute('id').substr(13);
-            //alert(id)
-            var ele = document.getElementById('cursor-circle');
-            document.body.style.cursor = "none";
-            //alert(e.clientX+" "+e.clientY);
-            $(ele).removeClass('hidden')
-                .attr('color-info', but.getAttribute('color-info'))
-                .css({ "background-color": but.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
-            if ($("#screen").backgroundColor != but.getAttribute('color-info')) {
-                $("#panel").stop();
-                $("#screen").stop();
-                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 2000, "swing", function () {
-                    $("#panel").stop();
-                });
-                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 3000);
-            }
-            $("#color-name").text(window.color.zg[id]['name']);
-            $("#color-info1").text("R" + window.color.zg[id]['RGB'][0] + " " + "G" + window.color.zg[id]['RGB'][1] + " " + "B" + window.color.zg[id]['RGB'][2]);
-            $("#color-info2").text("C" + window.color.zg[id]['CMYK'][0] + " " + "M" + window.color.zg[id]['CMYK'][1] + " " + "Y" + window.color.zg[id]['CMYK'][2] + " " + "K" + window.color.zg[id]['CMYK'][3]);
-            e.preventDefault();
+                    var themodule = ["mixer", "firework", "streamgraph"];//通过这个函数来添加样式
+                    var order = 0;
+                    $(window).mousedown(function (e) {//通过这个函数来获得颜色
+                        if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
+                            mouseMoving = true;
+                            var but = document.elementFromPoint(e.clientX, e.clientY);//get DOM
+                            var id = but.getAttribute('id').substr(13);
+                            //alert(id)
+                            var ele = document.getElementById('cursor-circle');
+                            document.body.style.cursor = "none";
+                            //alert(e.clientX+" "+e.clientY);
+                            $(ele).removeClass('hidden')
+                                .attr('color-info', but.getAttribute('color-info'))
+                                .css({ "background-color": but.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
+                            if ($("#screen").backgroundColor != but.getAttribute('color-info')) {
+                                $("#panel").stop();
+                                $("#screen").stop();
+                                $("#screen").animate({ backgroundColor: but.getAttribute('color-info') }, 2000, "swing", function () {
+                                    $("#panel").stop();
+                                });
+                                $("#panel").animate({ backgroundColor: but.getAttribute('color-info') }, 3000);
+                            }
+                            $("#color-name").text(window.color.zg[id]['name']);
+                            $("#color-info1").text("R" + window.color.zg[id]['RGB'][0] + " " + "G" + window.color.zg[id]['RGB'][1] + " " + "B" + window.color.zg[id]['RGB'][2]);
+                            $("#color-info2").text("C" + window.color.zg[id]['CMYK'][0] + " " + "M" + window.color.zg[id]['CMYK'][1] + " " + "Y" + window.color.zg[id]['CMYK'][2] + " " + "K" + window.color.zg[id]['CMYK'][3]);
+                            e.preventDefault();
 
-        }
-    });
-    $(window).mousemove(function (e) {
-        if (typeof mouseMoving != "undefined") {
-            var ele = document.getElementById('cursor-circle');
-            $(ele).removeClass('hidden').css({ "background-color": ele.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
-            e.preventDefault();
-        }
-    })
-    $(window).mouseup(function (e) {
-        if (typeof mouseMoving != "undefined") {
-            mouseMoving = undefined;
-            //alert("UP"+e.clientX+" "+e.clientY);
-            var ele = document.getElementById('cursor-circle');//
-            $(ele).addClass('hidden');
-            document.body.style.cursor = "default";
-            e.preventDefault();
-            var target = document.elementFromPoint(e.clientX, e.clientY);
-            if (target.hasAttribute('graphObject') || target.hasAttribute('graphobject')) {
-                if (target.tagName == 'circle' || target.tagName == 'path' || target.tagName == 'rect') {
-                    target.setAttribute('fill', ele.getAttribute('color-info'));
-                }
-                if (typeof target.onColorChange == 'function') {
-                    target.onColorChange();
-                }
-            }
-        }
-    });
-    function installModule(name) {
-        var html = window.graphingModules[name].html;
-        var scripts = window.graphingModules[name].scripts;
-        document.getElementById('graph-container').innerHTML = html;
-        for (var script of scripts) {
-            var s = document.createElement('script');
-            s.setAttribute('src', script)
-            document.body.appendChild(s);
-            s.remove();
-        }
-    };
-    function uninstallModule() {
-        document.getElementById('graph-container').innerHTML = "";
-    };
-    $(window).ready(function () {
-        var container = d3.select("#key-box");
-        container.selectAll('div').data(window.color.zg)
-            .enter().append('div')
-            .classed('key', true)
-            .attr('id', function (e, i) { return 'color-botton-' + i; })
-            .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
-            .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
-    });
-    installModule(themodule[0]);
-    function turnleft(){
-        if(order>0){
-            --order;
-        }
-        else
-            order=themodule.length-1;
-        installModule(themodule[order]);
-    };
-    function turnright(){
-        if(order===themodule.length-1)
-            order=0;
-        else
-            ++order;
-        installModule(themodule[order]);
-    };
+                        }
+                    });
+                    $(window).mousemove(function (e) {
+                        if (typeof mouseMoving != "undefined") {
+                            var ele = document.getElementById('cursor-circle');
+                            $(ele).removeClass('hidden').css({ "background-color": ele.getAttribute('color-info'), "position": "fixed", 'top': e.clientY, 'left': e.clientX, 'z-index': 2 });
+                            e.preventDefault();
+                        }
+                    })
+                    $(window).mouseup(function (e) {
+                        if (typeof mouseMoving != "undefined") {
+                            mouseMoving = undefined;
+                            //alert("UP"+e.clientX+" "+e.clientY);
+                            var ele = document.getElementById('cursor-circle');//
+                            $(ele).addClass('hidden');
+                            document.body.style.cursor = "default";
+                            e.preventDefault();
+                            var target = document.elementFromPoint(e.clientX, e.clientY);
+                            if (target.hasAttribute('graphObject') || target.hasAttribute('graphobject')) {
+                                if (target.tagName == 'circle' || target.tagName == 'path' || target.tagName == 'rect') {
+                                    target.setAttribute('fill', ele.getAttribute('color-info'));
+                                }
+                                if (typeof target.onColorChange == 'function') {
+                                    target.onColorChange();
+                                }
+                            }
+                        }
+                    });
+                    function installModule(name) {
+                        var html = window.graphingModules[name].html;
+                        var scripts = window.graphingModules[name].scripts;
+                        document.getElementById('graph-container').innerHTML = html;
+                        for (var script of scripts) {
+                            var s = document.createElement('script');
+                            s.setAttribute('src', script)
+                            document.body.appendChild(s);
+                            s.remove();
+                        }
+                    };
+                    function uninstallModule() {
+                        document.getElementById('graph-container').innerHTML = "";
+                    };
+                    $(window).ready(function () {
+                        var container = d3.select("#key-box");
+                        container.selectAll('div').data(window.color.zg)
+                            .enter().append('div')
+                            .classed('key', true)
+                            .attr('id', function (e, i) { return 'color-botton-' + i; })
+                            .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
+                            .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
+                    });
+                    installModule(themodule[0]);
+                    function turnleft() {
+                        if (order > 0) {
+                            --order;
+                        }
+                        else
+                            order = themodule.length - 1;
+                        installModule(themodule[order]);
+                    };
+                    function turnright() {
+                        if (order === themodule.length - 1)
+                            order = 0;
+                        else
+                            ++order;
+                        installModule(themodule[order]);
+                    };
 
 </script>
 
