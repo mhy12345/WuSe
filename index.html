@@ -11,6 +11,7 @@
     <script src='./javascripts/jquery.color.js'></script>
     <script src='./javascripts/color-zg.js'></script>
     <script src='./modules/mixer.js'></script>
+    <script src='./modules/game1.js'></script>
     <script type="text/javascript" src="./modules/firework.js"></script>
 </head>
 
@@ -38,7 +39,7 @@
         </div>
         <div class='right-column'>
             <div class='graph' id='graph-container'>
-                <!-- TODO: Load Modules Here! -->
+                
             </div>
         </div>
     </div>
@@ -120,7 +121,7 @@
             .attr('id', function (e, i) { return 'color-botton-' + i; })
             .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
             .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
-        installModule('firework');
+        installModule('game1');
     });
 
 </script>
