@@ -13,6 +13,7 @@
     <script src='./modules/mixer.js'></script>
     <script type="text/javascript" src="./modules/firework.js"></script>
     <script type="text/javascript" src="./modules/streamgraph.js"></script>
+    <script type="text/javascript" src="./modules/game1.js"></script>
     <!--<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
 </head>
 
@@ -39,14 +40,13 @@
             </div>
         </div>
         <div class='right-column'>
-
             <div class='graph'>
-                <div id="turnleft" class='move' style='float:left;'>
+                <div id="turnleft" class='move' style='left:25px;'>
                     <a onclick='turnleft()'>
                         <span class='glyphicon glyphicon-chevron-left' style='font-size:30px'></span>
                     </a>
                 </div>
-                <div id="turnright" class='move' style='float:right;'>
+                <div id="turnright" class='move' style='right:75px;'>
                     <a onclick='turnright()'>
                         <span class='glyphicon glyphicon-chevron-right' style='font-size:30px'></span>
                     </a>
@@ -55,21 +55,12 @@
                     <!-- TODO: Load Modules Here! -->
                 </div>
             </div>
-            <script type="text/javascript">
-                var a = document.getElementById("turnleft");
-                function mouseOver() {
-                    a.style.display = block;
-                }
-                function mouseOut() {
-                    a.style.display = none;
-                }
-            </script>
         </div>
     </div>
 </body>
 
 <script>
-                    var themodule = ["mixer", "firework", "streamgraph"];//通过这个函数来添加样式
+                    var themodule = ["game1","mixer", "firework", "streamgraph"];//通过这个函数来添加样式
                     var order = 0;
                     $(window).mousedown(function (e) {//通过这个函数来获得颜色
                         if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
