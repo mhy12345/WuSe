@@ -1,4 +1,4 @@
-
+document.getElementById('graph-container').style.background='#f7eed6';
 var n = 20, 
     m = 200, 
     k = 10;
@@ -31,7 +31,6 @@ var area = d3.area()
 svg.selectAll('path')
   .data(layers0)
   .enter().append('path')
-    .attr('graphObject',true)
     .attr('d', area)
     .attr('fill', function() { return z(Math.random()); });
 
