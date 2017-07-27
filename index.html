@@ -98,18 +98,6 @@
             }
         }
     });
-    var currentcolor=document.getElementById("panel").style.backgroundColor;
-    var colors=[];
-    function updating(){
-        var flag=false;
-        for(let i=0;i<colors.length;++i)
-            if(colors[i]===currentcolor)
-                flag=true;
-        if(flag===false)
-            colors.push(currentcolor);
-        else
-            flag=false;
-    };
     function installModule(name) {
         var html = window.graphingModules[name].html;
         var scripts = window.graphingModules[name].scripts;
