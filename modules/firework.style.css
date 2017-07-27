@@ -1,0 +1,11 @@
+#whole{
+	height: 520px;
+}
+
+#mycanvas{
+	padding-top: 17px;
+	padding-bottom: 20px;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
