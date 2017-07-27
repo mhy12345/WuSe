@@ -11,8 +11,8 @@
     <script src='./javascripts/jquery.color.js'></script>
     <script src='./javascripts/color-zg.js'></script>
     <script src='./modules/mixer.js'></script>
-    <script src='./modules/game1.js'></script>
     <script type="text/javascript" src="./modules/firework.js"></script>
+    <script type="text/javascript" src="./modules/streamgraph.js"></script>
 </head>
 
 <body>
@@ -38,14 +38,29 @@
             </div>
         </div>
         <div class='right-column'>
+        <div id="turnleft">
+            <script type="text/javascript">
+            var a=document.getElementById("turnleft");
+            function mouseOver(){
+                a.style.display=block;
+            }
+            function mouseOut(){
+                a.style.display=none;
+            }
+
+            </script>
+        </div>
+        <div id="turnright"></div>
             <div class='graph' id='graph-container'>
-                
+                <!-- TODO: Load Modules Here! -->
             </div>
         </div>
     </div>
 </body>
 
 <script>
+var themodule=["mixer","firework","streamgraph"];//通过这个函数来添加样式
+var order=0;
     $(window).mousedown(function (e) {//通过这个函数来获得颜色
         if (e.button == 0 && document.elementFromPoint(e.clientX, e.clientY).hasAttribute('color-info')) {
             mouseMoving = true;
@@ -90,7 +105,7 @@
             e.preventDefault();
             var target = document.elementFromPoint(e.clientX, e.clientY);
             if (target.hasAttribute('graphObject') || target.hasAttribute('graphobject')) {
-                if (target.tagName == 'circle' || target.tagName == 'path'|| target.tagName == 'rect') {
+                if (target.tagName == 'circle' || target.tagName == 'path' || target.tagName == 'rect') {
                     target.setAttribute('fill', ele.getAttribute('color-info'));
                 }
                 if (typeof target.onColorChange == 'function') {
@@ -121,8 +136,23 @@
             .attr('id', function (e, i) { return 'color-botton-' + i; })
             .attr('color-info', function (e) { return "rgb(" + e.RGB.join(",") + ")"; })
             .style('background-color', function (e) { return "rgb(" + e.RGB.join(",") + ")"; });
-        installModule('game1');
     });
+    installModule(themodule[0]);
+    function turnleft(){
+        if(order>0){
+            --order;
+        }
+        else
+            order=themodule.length-1;
+        installModule(themodule[order]);
+    };
+    function turnright(){
+        if(order===themodule.length-1)
+            order=0;
+        else
+            ++order;
+        installModule(themodule[order]);
+    };
 
 </script>
 
