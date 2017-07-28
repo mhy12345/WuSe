@@ -31,6 +31,7 @@ var area = d3.area()
 svg.selectAll('path')
   .data(layers0)
   .enter().append('path')
+    .attr('graphObject',true)
     .attr('d', area)
     .attr('fill', function() { return z(Math.random()); });
 
