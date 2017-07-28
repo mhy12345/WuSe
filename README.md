@@ -21,7 +21,7 @@
 
 ```
 ./
-    README.md 说明文档	
+    README.md 说明文档	
     index.html 入口
     modules/ 模块
     stylesheets/ css样式表
